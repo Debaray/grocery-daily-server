@@ -50,7 +50,7 @@ client.connect(err => {
     console.log('delete this', id);
     groceryCollection.deleteOne({ _id: id })
       .then(documents => {
-        res.send("data delete successfully", documents.deletedCount);
+        res.send(documents.deletedCount);
       })
   })
 
