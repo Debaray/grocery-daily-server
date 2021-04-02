@@ -40,17 +40,15 @@ client.connect(err => {
     console.log('adding new product: ', newProduct)
     groceryCollection.insertOne(newProduct)
       .then(result => {
-        console.log('inserted count', result.insertedCount);
         res.send(result.insertedCount > 0)
       })
   })
 
   app.delete('/deleteProduct/:id', (req, res) => {
     const id = ObjectID(req.params.id);
-    console.log('delete this', id);
     groceryCollection.deleteOne({ _id: id })
       .then(documents => {
-        res.send(documents.deletedCount);
+        res.send(documents.deletedCount > 0);
       })
   })
 
@@ -65,7 +63,8 @@ client.connect(err => {
   })
 
   app.get('/orders', (req, res) => {
-    ordersCollection.find({})
+    const queryEmail = req.query.email;
+    ordersCollection.find({ email: queryEmail })
       .toArray((err, orders) => {
         res.send(orders)
       })
